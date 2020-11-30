@@ -1,6 +1,7 @@
 # Exemplo de implementação simples utilizando o dynamodb jdk 2
 
 partition = 10GB, 3000RCU e 1000 WCU
+
 Tamanho json clients = 0,248Kb
 
 
