@@ -1,21 +1,20 @@
 # Exemplo de implementação simples utilizando o dynamodb jdk 2
 
 partition = 10GB, 3000RCU e 1000 WCU
+Tamanho json clients = 0,248Kb
+
 
 ### Como o DynamoDB aloca partições:
 Partition = Round( RCU (PROV/3000 ) + WCU (PROV/1000) )
 
 
-Tamanho json clients = 0,248Kb
-
-
 ### CALCULO RCU
 #### Reader
-_Calculando Strongly consistent_
+_Calculo Strongly consistent_
 
 0,248Kb / 4Kb =  0,062 = 1 RCU
 
-_Calculando Eventualy consistent_
+_Calculo Eventualy consistent_
 
 0,248Kb / 1Kb = 0,248 = 1 RCU
 
@@ -23,7 +22,7 @@ _Calculando Eventualy consistent_
 0,248Kb / 1Kb = 0,248 = 1 WCU
 
 ### CALCULO PROVISIONADO
-**Provisionamento default dynamo -> RCU = 5 e WCU = 5**
+**Provisionamento dynamo (free tier usage limit) -> RCU = 5 e WCU = 5**
 
 #### Reader - (as leitura são feitas em blocos de 4Kb)
 _Calculo Strongly consistent_
