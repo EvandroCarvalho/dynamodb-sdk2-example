@@ -1,0 +1,90 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Dynamodb",
+		"_postman_id": "8febbc7f-f645-8dda-8701-cf7258c3ea93",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "clients",
+			"description": "",
+			"item": [
+				{
+					"name": "create clients",
+					"request": {
+						"url": "http://localhost:8080/v1/clients",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"12312312\",\n    \"email\": \"client@gmail.com\",\n    \"clientName\": \"client\",\n    \"address\": {\n        \"street\": \"street\",\n        \"number\": 000,\n        \"city\": \"Uberlândia\",\n        \"neighborhood\": \"xpto\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "actuator",
+					"request": {
+						"url": "http://localhost:8080/actuator",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Evandro Junior\",\n\t\"cpf\":\"000000000000\",\n\t\"address\": {\n\t\t\"street\":\"rua dos bambuzais\",\n\t\t\"number\": 550,\n\t\t\"cep\":\"38400114\",\n\t\t\"neigborhood\":\"cidade jardim\",\n\t\t\"city\":\"Uberlândia\",\n\t\t\"country\":\"Brasil\"\n\t}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"request": {
+						"url": "http://localhost:8080/v1/clients",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get by name - index",
+					"request": {
+						"url": "http://localhost:8080/v1/clients/name-index/evandro1",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get by name",
+					"request": {
+						"url": "http://localhost:8080/v1/clients/name-without-index/evandro1",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

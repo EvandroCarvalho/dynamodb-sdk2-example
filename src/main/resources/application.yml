@@ -1,0 +1,20 @@
+server:
+  port: 8080
+kafka:
+    bootstrap-servers: localhost:9092
+spring:
+  application:
+    name: dynamodb-demo
+aws:
+    credentials:
+        accessKey: ${ACCESS_KEY}
+        secretKey: ${SECRET_KEY}
+management:
+  endpoint:
+    helath:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
