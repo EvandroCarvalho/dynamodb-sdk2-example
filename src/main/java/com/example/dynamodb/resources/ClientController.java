@@ -3,7 +3,9 @@ package com.example.dynamodb.resources;
 import com.example.dynamodb.entity.Address;
 import com.example.dynamodb.entity.Client;
 import com.example.dynamodb.repository.ClientRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public class ClientController {
 
+    private final ObjectMapper mapper;
     private final ClientRepository repository;
     private final List<String> names = List.of("Bakugo", "Goku", "Vegeta", "Gohan", "Kuabara", "Sanji", "Zoro", "Sasuka", "Eren", "Ligth", "Itachi",
             "Levi", "Luffy", "Midorya", "Alphonse", "Edward", "Naruto", "Ichigo", "Toguro", "yusuke", "Kaido", "Ichigo", "Roy",
@@ -23,29 +26,36 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @SneakyThrows
     public Client save(@RequestBody Client client) {
-            repository.save(client);
+        String value = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(client);
+        System.out.println(value);
+        repository.save(client);
         return client;
     }
 
     @GetMapping(path = "/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public String create(@RequestParam(value = "amount", defaultValue = "1000") int amount,
+    @SneakyThrows
+    public String create(@RequestParam(value = "amount", defaultValue = "1") int amount,
                          @RequestParam(value = "same-partition-key", defaultValue = "true") boolean samePartitionValue) {
         String partitionKey = UUID.randomUUID().toString();
         for(int i = amount; i > 0; i--) {
             int ints = ThreadLocalRandom.current().ints(0, names.size()).findFirst().getAsInt();
             Client client = Client.builder()
                     .id(samePartitionValue ? partitionKey : UUID.randomUUID().toString())
-                    .address(Address.builder()
+                    .address(List.of(Address.builder()
                             .city("Uberlândia")
                             .neighborhood("algum bairro")
                             .street("xpto")
                             .number(000)
-                            .build())
+                            .build()))
                     .clientName(names.get(ints))
                     .email(names.get(ints).concat(String.valueOf(i)).concat("@email.com"))
                     .build();
+
+            String s = mapper.writeValueAsString(client);
+            System.out.println(s);
             repository.save(client);
         }
         return String.format("%s clients ware created", amount);

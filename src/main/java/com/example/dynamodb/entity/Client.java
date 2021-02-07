@@ -1,23 +1,35 @@
 package com.example.dynamodb.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
 
-@DynamoDbBean
+import java.util.List;
+
+//@DynamoDbBean
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@Getter
 public class Client {
 
     private String id;
     private String email;
     private String clientName;
-    private Address address;
+    private List<Address> address;
+    private List<String> passwords;
+
+    @DynamoDbAttribute(value = "passwords")
+    public List<String> getPasswords() {
+        return passwords;
+    }
+
+    public void setPasswords(List<String> passwords) {
+        this.passwords = passwords;
+    }
 
     @DynamoDbPartitionKey
+    @DynamoDbAttribute(value = "id")
     public String getId() {
         return id;
     }
@@ -27,6 +39,7 @@ public class Client {
     }
 
     @DynamoDbSortKey
+    @DynamoDbAttribute("email")
     public String getEmail() {
         return email;
     }
@@ -35,7 +48,7 @@ public class Client {
         this.email = email;
     }
 
-    @DynamoDbSecondaryPartitionKey(indexNames = "client_name-index")
+    @DynamoDbSecondaryPartitionKey(indexNames = "client-index")
     @DynamoDbAttribute(value = "client_name")
     public String getClientName() {
         return clientName;
@@ -45,11 +58,12 @@ public class Client {
         this.clientName = clientName;
     }
 
-    public Address getAddress() {
+    @DynamoDbAttribute(value = "address")
+    public List<Address> getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(List<Address> address) {
         this.address = address;
     }
 }

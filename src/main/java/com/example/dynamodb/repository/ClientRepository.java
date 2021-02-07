@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.*;
 import software.amazon.awssdk.enhanced.dynamodb.internal.client.DefaultDynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.internal.conditional.EqualToConditional;
 import software.amazon.awssdk.enhanced.dynamodb.model.*;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
@@ -29,9 +30,10 @@ public class ClientRepository {
 
 
     @PostConstruct
+
     public void setUp() {
         clientDynamoDbTable = dynamoDbClient.table("clients", TableSchema.fromBean(Client.class));
-        clientDynamoDbIndex = dynamoDbClient.table("clients", TableSchema.fromBean(Client.class)).index("client_name-index");
+        clientDynamoDbIndex = dynamoDbClient.table("clients", TableSchema.fromBean(Client.class)).index("client-index");
     }
 
     public Client save(Client client) {
@@ -54,8 +56,17 @@ public class ClientRepository {
     public List<Client> findByNameIndex(String name) {
 
         QueryConditional queryConditional = QueryConditional
-                .keyEqualTo(Key.builder().partitionValue(name)
+                .sortBeginsWith(Key.builder()
+                        .sortValue("evandro1")
+                        .partitionValue(name)
                         .build());
+//        EqualToConditional equalToConditional = new EqualToConditional(Key.builder()
+//                .sortValue(AttributeValue.builder().s("evandro1").build())
+//                .partitionValue("evandro1")
+//                .build());
+//        QueryConditional queryConditional2 = QueryConditional
+//                .keyEqualTo(Key.builder().partitionValue(name)
+//                        .build());
 
         QueryEnhancedRequest queryEnhancedRequest = QueryEnhancedRequest.builder()
                 .scanIndexForward(true)
