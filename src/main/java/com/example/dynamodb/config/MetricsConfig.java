@@ -1,6 +1,5 @@
 package com.example.dynamodb.config;
 
-import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -25,7 +24,7 @@ public class MetricsConfig {
     public Timer saveTimer(MeterRegistry registry) {
         return Timer.builder("save_time")
                 .description("time to save")
-                .tag("timer","timer_salve")
+                .tag("timer", "timer_salve")
                 .register(registry);
     }
 

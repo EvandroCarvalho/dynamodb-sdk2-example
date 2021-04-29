@@ -1,24 +1,25 @@
 package com.example.dynamodb.entity;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import software.amazon.awssdk.enhanced.dynamodb.extensions.annotations.DynamoDbVersionAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
 
-@DynamoDbBean
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamoDBTable(tableName = "animes")
 public class Animes {
 
+    @DynamoDBHashKey(attributeName = "id_animes")
     private String id;
 
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "name-index")
     private String name;
 
     private String author;
@@ -27,8 +28,6 @@ public class Animes {
 
     private Long version;
 
-    @DynamoDbPartitionKey
-    @DynamoDbAttribute("id_animes")
     public String getId() {
         return id;
     }
@@ -38,7 +37,6 @@ public class Animes {
         return name;
     }
 
-//    @DynamoDbSecondaryPartitionKey(indexNames = "author-index")
     @DynamoDbAttribute("author")
     public String getAuthor() {
         return author;
@@ -49,7 +47,6 @@ public class Animes {
         return note;
     }
 
-    @DynamoDbVersionAttribute
     public Long getVersion() {
         return version;
     }

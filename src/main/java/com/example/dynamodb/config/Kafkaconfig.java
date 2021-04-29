@@ -1,6 +1,6 @@
 package com.example.dynamodb.config;
 
-import com.example.dynamodb.entity.Client;
+import com.example.dynamodb.entity.Animes;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -30,8 +30,8 @@ public class Kafkaconfig {
         return properties;
     }
 
-    public ConcurrentKafkaListenerContainerFactory<String, Client> concurrentKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Client> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, Animes> concurrentKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Animes> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         factory.getContainerProperties().setCommitRetries(60);
 
