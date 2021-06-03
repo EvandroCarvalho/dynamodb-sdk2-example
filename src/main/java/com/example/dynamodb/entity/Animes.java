@@ -1,5 +1,6 @@
 package com.example.dynamodb.entity;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
@@ -19,7 +20,8 @@ public class Animes {
     @DynamoDBHashKey(attributeName = "id_animes")
     private String id;
 
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = "name-index")
+//    @DynamoDBIndexHashKey(globalSecondaryIndexName = "name-index")
+    @DynamoDBAttribute(attributeName = "anime_name")
     private String name;
 
     private String author;

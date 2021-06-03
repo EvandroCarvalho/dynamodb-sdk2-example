@@ -2,6 +2,8 @@ package com.example.dynamodb.resources;
 
 import com.example.dynamodb.entity.Animes;
 import com.example.dynamodb.repository.AnimesRepository;
+import com.example.dynamodb.repository.SdkRepository;
+import com.example.dynamodb.repository.SdkRepositoryImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import java.util.function.Consumer;
 public class AnimesController {
 
     private final AnimesRepository animesRepository;
+    private final SdkRepository sdkRepository;
     private final ObjectMapper mapper;
     //    private final ClientRepository repository;
     private final List<String> names = List.of("Bakugo", "Goku", "Vegeta", "Gohan", "Kuabara", "Sanji", "Zoro", "Sasuka", "Eren", "Ligth", "Itachi",
@@ -32,13 +35,14 @@ public class AnimesController {
     @PostMapping(path = "/animes")
     @ResponseStatus(HttpStatus.CREATED)
     public Animes saveAnimes(@RequestBody Animes animes) {
-        names.forEach(name -> animesRepository.save(Animes.builder()
-                .name(name)
-                .id(UUID.randomUUID().toString())
-                .note(ThreadLocalRandom.current().nextInt(5, 10))
-                .build()));
-        Animes animeSaved = animesRepository.save(animes);
-        return animeSaved;
+//        names.forEach(name -> animesRepository.save(Animes.builder()
+//                .name(name)
+//                .id(UUID.randomUUID().toString())
+//                .note(ThreadLocalRandom.current().nextInt(5, 10))
+//                .build()));
+        return sdkRepository.save(animes);
+//        Animes animeSaved = animesRepository.save(animes);
+//        return animeSaved;
     }
 
     @GetMapping(path = "/animes")
