@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 10200
 kafka:
     bootstrap-servers: localhost:9092
 spring:
@@ -7,8 +7,8 @@ spring:
     name: dynamodb-demo
 aws:
     credentials:
-        accessKey: ${ACCESS_KEY}
-        secretKey: ${SECRET_KEY}
+      accessKey: ${ACCESS_KEY}
+      secretKey: ${SECRET_KEY}
 management:
   endpoint:
     helath:

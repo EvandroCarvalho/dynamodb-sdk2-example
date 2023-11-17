@@ -2,14 +2,13 @@ package com.example.dynamodb.repository;
 
 import com.example.dynamodb.entity.Client;
 import io.micrometer.core.instrument.Timer;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.*;
-import software.amazon.awssdk.enhanced.dynamodb.internal.client.DefaultDynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.model.*;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,10 +21,6 @@ public class ClientRepository {
     private final DynamoDbEnhancedClient dynamoDbClient;
     private DynamoDbTable<Client> clientDynamoDbTable;
     private DynamoDbIndex<Client> clientDynamoDbIndex;
-    private final Timer saveTimer;
-    private final Timer consultScanTimer;
-    private final Timer consultByIndex;
-    private final Timer consultWithoutIndex;
 
 
     @PostConstruct
@@ -35,16 +30,12 @@ public class ClientRepository {
     }
 
     public Client save(Client client) {
-        LocalDateTime now = LocalDateTime.now();
         clientDynamoDbTable.putItem(client);
-        saveTimer.record(Duration.between(now, LocalDateTime.now()));
         return client;
     }
 
     public List<Client> findAll() {
-        LocalDateTime now = LocalDateTime.now();
         PageIterable<Client> scan = clientDynamoDbTable.scan();
-        consultScanTimer.record(Duration.between(now, LocalDateTime.now()));
         return scan
                 .items()
                 .stream()
@@ -63,12 +54,10 @@ public class ClientRepository {
                 .limit(100)
                 .build();
 
-        LocalDateTime now = LocalDateTime.now();
         List<Client> items = clientDynamoDbIndex.query(queryEnhancedRequest)
                 .iterator()
                 .next()
                 .items();
-        consultByIndex.record(Duration.between(now, LocalDateTime.now()));
         return items;
     }
 
@@ -82,9 +71,7 @@ public class ClientRepository {
                 .filterExpression(expression)
                 .limit(100)
                 .build();
-        LocalDateTime now = LocalDateTime.now();
         List<Client> collect = clientDynamoDbTable.scan(request).items().stream().collect(Collectors.toList());
-        consultWithoutIndex.record(Duration.between(now, LocalDateTime.now()));
         return collect;
     }
 

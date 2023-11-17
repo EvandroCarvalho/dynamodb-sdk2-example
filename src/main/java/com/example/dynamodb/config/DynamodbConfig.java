@@ -23,7 +23,7 @@ public class DynamodbConfig {
         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(accessKey, secretKey);
         DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
                 .credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials))
-                .region(Region.US_EAST_2)
+                .region(Region.US_EAST_1)
                 .build();
 
         ScanRequest request = ScanRequest.builder()

@@ -3,10 +3,12 @@ package com.example.dynamodb.resources;
 import com.example.dynamodb.entity.Address;
 import com.example.dynamodb.entity.Client;
 import com.example.dynamodb.repository.ClientRepository;
+import com.example.dynamodb.service.GetS3LinkPresigned;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ClientController {
 
     private final ClientRepository repository;
+    private final GetS3LinkPresigned getS3LinkPresigned;
     private final List<String> names = List.of("Bakugo", "Goku", "Vegeta", "Gohan", "Kuabara", "Sanji", "Zoro", "Sasuka", "Eren", "Ligth", "Itachi",
             "Levi", "Luffy", "Midorya", "Alphonse", "Edward", "Naruto", "Ichigo", "Toguro", "yusuke", "Kaido", "Ichigo", "Roy",
             "Killua", "Saitama", "Gon", "Hisoka", "Shoto", "Kaneki");
@@ -73,6 +76,12 @@ public class ClientController {
     @ResponseStatus(HttpStatus.OK)
     public Client findByIdPartition(@PathVariable("id") String id) {
         return repository.findByIdParition(id);
+    }
+
+
+    @GetMapping(path = "/link")
+    public URL getUrl() {
+        return getS3LinkPresigned.getUri();
     }
 
 }
